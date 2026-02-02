@@ -26,7 +26,6 @@ import { useParams } from "react-router-dom";
 const { Title, Text } = Typography;
 
 const ORDER_API = import.meta.env.VITE_POS_ORDER_API as string;
-const AUTH_API = import.meta.env.VITE_POST_AUTH_API as string;
 
 type Order = {
   id: number;
@@ -659,7 +658,7 @@ export default function Public() {
     // setPdfUrl("");
     setLoadingInvoice(true);
     try {
-      const { data } = await axios.post(
+      await axios.post(
         `${ORDER_API}/public/invoices`,
         {
           // 🔒 datos para encontrar/validar la order (anti-abuso)
