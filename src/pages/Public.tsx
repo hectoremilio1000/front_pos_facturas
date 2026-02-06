@@ -741,13 +741,13 @@ export default function Public() {
           <div>
             <div className="mb-6">
               <Title level={2} className="mb-1">
-                SISTEMA DE FACTURACION DE CANTINA LA LLORONA
+                SISTEMA DE FACTURACION DE GROWTHSUITE
               </Title>
 
               <Text type="secondary">
-                Busca tu consumo por <b>fecha</b>, <b>serie</b>, <b>folio</b>,{" "}
-                <b>total</b> y, si lo conoces, <b>nombre de la mesa</b>. Si hay
-                duplicados, elige el correcto.
+                Busca tu consumo por <b>fecha</b>, <b>serie de folio</b>,{" "}
+                <b>numero de folio</b>, <b>total</b> y, si lo conoces,{" "}
+                <b>nombre de la mesa</b>. Si hay duplicados, elige el correcto.
               </Text>
             </div>
 
