@@ -1,69 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --gs-sand: #fbf5ee;
+  --gs-cream: #fffaf5;
+  --gs-amber: #f4b26a;
+  --gs-coral: #f29b7a;
+  --gs-ink: #2b2a28;
+  --gs-slate: #5f5b56;
+  --gs-ocean: #1f7ae0;
+
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color: var(--gs-ink);
+  background-color: var(--gs-sand);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  color-scheme: light;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--gs-sand);
+}
+
+#root {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.gs-warm-bg {
+  background:
+    radial-gradient(900px 420px at -5% -20%, rgba(244, 178, 106, 0.35), transparent 65%),
+    radial-gradient(800px 420px at 105% -15%, rgba(31, 122, 224, 0.25), transparent 60%),
+    linear-gradient(180deg, var(--gs-cream), var(--gs-sand));
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+@keyframes gs-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.gs-fade-up {
+  animation: gs-fade-up 0.6s ease-out both;
+}
+
+.gs-delay-1 {
+  animation-delay: 0.08s;
+}
+
+.gs-delay-2 {
+  animation-delay: 0.16s;
+}
+
+.gs-delay-3 {
+  animation-delay: 0.24s;
 }
