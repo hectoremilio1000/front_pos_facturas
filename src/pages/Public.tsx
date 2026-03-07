@@ -15,7 +15,7 @@ import {
 } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
 import { FiMail, FiHelpCircle, FiCheckCircle } from "react-icons/fi";
-import NotaEjemplo from "../assets/nota-ejemplo.png";
+// (imagen de ejemplo eliminada — se usa ticket visual inline)
 import { FaWhatsapp } from "react-icons/fa";
 
 import axios from "axios";
@@ -1139,30 +1139,134 @@ export default function Public() {
           </div>
 
           {/* DERECHA: tutorial */}
-          <div className="lg:sticky lg:top-6 h-fit">
+          <div className="lg:sticky lg:top-6 h-fit space-y-4">
             <Card
               className="shadow-sm"
-              title="¿Cómo encuentro mi folio y fecha?"
+              title="¿Cómo encuentro mis datos?"
             >
-              <Text type="secondary">Usa tu nota de consumo. Necesitas:</Text>
-              <ul className="list-disc ml-5 mt-2 text-slate-700">
-                <li>
-                  <b>FOLIO</b> (ese es tu <b>Numcheque</b>)
-                </li>
-                <li>
-                  La <b>fecha</b> impresa debajo del folio
-                </li>
-              </ul>
-              <div className="mt-4 rounded-lg overflow-hidden border border-slate-200">
-                <img
-                  src={NotaEjemplo}
-                  alt="Ejemplo de nota"
-                  className="w-full"
-                />
+              <Text type="secondary">
+                Busca en tu ticket de consumo los datos que se resaltan abajo.
+                Cada campo marcado corresponde a un campo del formulario.
+              </Text>
+
+              {/* ── Mock Ticket ── */}
+              <div className="mt-4 mx-auto max-w-[300px] bg-white border border-slate-300 rounded-lg shadow-inner font-mono text-xs leading-relaxed">
+                {/* Header */}
+                <div className="px-4 pt-4 pb-2 text-center">
+                  <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 text-lg">
+                    R
+                  </div>
+                  <div className="font-bold text-sm text-slate-700">RESTAURANTE</div>
+                  <div className="text-[10px] text-slate-400">Calle Ejemplo #123, Col. Centro</div>
+                  <div className="text-[10px] text-slate-400">Tel: 55 1234 5678</div>
+                </div>
+
+                <div className="border-t border-dashed border-slate-300 mx-3" />
+
+                {/* Datos destacados */}
+                <div className="px-4 py-2 space-y-1.5">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-500">Orden:</span>
+                    <span className="text-slate-600">#1042</span>
+                  </div>
+
+                  {/* Serie de folio */}
+                  <div className="flex justify-between items-center rounded-md bg-blue-50 border border-blue-300 px-2 py-1 -mx-2">
+                    <span className="text-blue-700 font-semibold">Serie de Folio:</span>
+                    <span className="text-blue-800 font-bold">A</span>
+                  </div>
+
+                  {/* Numero de folio */}
+                  <div className="flex justify-between items-center rounded-md bg-blue-50 border border-blue-300 px-2 py-1 -mx-2">
+                    <span className="text-blue-700 font-semibold">No. Folio:</span>
+                    <span className="text-blue-800 font-bold">587</span>
+                  </div>
+
+                  {/* Mesa */}
+                  <div className="flex justify-between items-center rounded-md bg-amber-50 border border-amber-300 px-2 py-1 -mx-2">
+                    <span className="text-amber-700 font-semibold">Mesa:</span>
+                    <span className="text-amber-800 font-bold">Terraza 3</span>
+                  </div>
+
+                  {/* Fecha */}
+                  <div className="flex justify-between items-center rounded-md bg-green-50 border border-green-300 px-2 py-1 -mx-2">
+                    <span className="text-green-700 font-semibold">Fecha:</span>
+                    <span className="text-green-800 font-bold">07/03/2026 14:32</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-dashed border-slate-300 mx-3" />
+
+                {/* Items */}
+                <div className="px-4 py-2 space-y-1 text-slate-500">
+                  <div className="flex justify-between">
+                    <span>2 x Platillo del dia</span>
+                    <span>$320.00</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>1 x Bebida</span>
+                    <span>$85.00</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>1 x Postre</span>
+                    <span>$110.00</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-dashed border-slate-300 mx-3" />
+
+                {/* Totales */}
+                <div className="px-4 py-2 space-y-1">
+                  <div className="flex justify-between text-slate-500">
+                    <span>Subtotal</span>
+                    <span>$443.97</span>
+                  </div>
+                  <div className="flex justify-between text-slate-500">
+                    <span>IVA</span>
+                    <span>$71.03</span>
+                  </div>
+
+                  {/* Total */}
+                  <div className="flex justify-between items-center rounded-md bg-purple-50 border border-purple-300 px-2 py-1.5 -mx-2">
+                    <span className="text-purple-700 font-bold text-sm">TOTAL</span>
+                    <span className="text-purple-800 font-bold text-sm">$515.00</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-dashed border-slate-300 mx-3" />
+
+                {/* Footer */}
+                <div className="px-4 py-3 text-center">
+                  <div className="text-[10px] text-slate-400">Gracias por su preferencia</div>
+                  <div className="text-[9px] text-slate-300 mt-1">GROWTHSUITE - POS</div>
+                </div>
               </div>
+
+              {/* Leyenda de colores */}
+              <div className="mt-4 space-y-1.5 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 rounded-sm bg-blue-300 border border-blue-400" />
+                  <span className="text-slate-600"><b>Serie de Folio</b> y <b>No. Folio</b> — campos obligatorios</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 rounded-sm bg-green-300 border border-green-400" />
+                  <span className="text-slate-600"><b>Fecha</b> — dia en que se realizo el consumo</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 rounded-sm bg-purple-300 border border-purple-400" />
+                  <span className="text-slate-600"><b>Total</b> — el monto total del ticket</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 rounded-sm bg-amber-300 border border-amber-400" />
+                  <span className="text-slate-600"><b>Mesa</b> — opcional, ayuda si hay duplicados</span>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="shadow-sm" title="¿Necesitas ayuda?">
               <div className="flex items-center gap-2">
                 <a
-                  href="https://wa.me/525549242477?text=Hola%20Cantina%20La%20Llorona,%20quiero%20ayuda%20con%20mi%20factura."
+                  href="https://wa.me/525549242477?text=Hola,%20quiero%20ayuda%20con%20mi%20factura."
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium"
@@ -1171,6 +1275,10 @@ export default function Public() {
                   <span>Consultar por WhatsApp</span>
                 </a>
               </div>
+              <Text type="secondary" className="block mt-2 text-xs">
+                Comunicate con el restaurante donde realizaste tu consumo
+                para que te apoyen con tus datos de facturacion.
+              </Text>
             </Card>
           </div>
         </div>
