@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   Button,
   Card,
@@ -116,6 +116,24 @@ const PAYMENT_FORM_OPTIONS: Option[] = [
   { value: "04", label: "04 - Tarjeta de crédito" },
   { value: "28", label: "28 - Tarjeta de débito" },
 ];
+
+/*
+ * Resaltado de un dato dentro del ticket de ejemplo. Las clases van completas
+ * y literales a propósito: armadas con `bg-${color}-50` Tailwind las purga en
+ * el build y el resaltado desaparece en producción.
+ */
+const MARCA_CLASES = {
+  blue: "bg-blue-100 text-blue-800 ring-blue-400",
+  green: "bg-green-100 text-green-800 ring-green-400",
+  purple: "bg-purple-100 text-purple-800 ring-purple-400",
+  amber: "bg-amber-100 text-amber-800 ring-amber-400",
+} as const;
+
+function Marca({ color, children }: { color: keyof typeof MARCA_CLASES; children: ReactNode }) {
+  return (
+    <span className={`rounded px-1 font-bold ring-1 ${MARCA_CLASES[color]}`}>{children}</span>
+  );
+}
 
 function todayUtcYYYYMMDD() {
   const d = new Date();
@@ -300,8 +318,8 @@ export default function Public() {
               </Title>
               <Text type="secondary">
                 Facturación electrónica — Busca tu consumo por <b>fecha</b>,{" "}
-                <b>serie de folio</b>, <b>numero de folio</b>, <b>total</b> y,
-                si lo conoces, <b>nombre de la mesa</b>.
+                <b>serie de folio</b>, <b>número de folio</b>, <b>total</b> y{" "}
+                <b>nombre de la mesa</b>, tal como aparecen en tu ticket.
               </Text>
             </div>
 
@@ -325,17 +343,17 @@ export default function Public() {
 
                 <div>
                   <Text className="block mb-1" type="secondary">Número de folio</Text>
-                  <Input value={folioNumber} onChange={(e) => setFolioNumber(e.target.value)} placeholder="Ej: 12345" />
+                  <Input value={folioNumber} onChange={(e) => setFolioNumber(e.target.value)} placeholder="Ej: 587" />
                 </div>
 
                 <div>
                   <Text className="block mb-1" type="secondary">Total</Text>
-                  <Input type="number" min="0" step="0.01" value={total} onChange={(e) => setTotal(e.target.value)} placeholder="Ej: 1324.67" />
+                  <Input type="number" min="0" step="0.01" value={total} onChange={(e) => setTotal(e.target.value)} placeholder="Ej: 515.00" />
                 </div>
 
                 <div>
                   <Text className="block mb-1" type="secondary">Nombre de la mesa</Text>
-                  <Input value={tableName} onChange={(e) => setTableName(e.target.value)} placeholder="Ej: Terraza A" />
+                  <Input value={tableName} onChange={(e) => setTableName(e.target.value)} placeholder="Ej: 12b terraza" />
                 </div>
 
                 <Text className="block mt-1 text-xs" type="secondary">
@@ -550,85 +568,104 @@ export default function Public() {
                 Cada campo marcado corresponde a un campo del formulario.
               </Text>
 
-              {/* Mock Ticket */}
-              <div className="mt-4 mx-auto max-w-[300px] bg-white border border-slate-300 rounded-lg shadow-inner font-mono text-xs leading-relaxed">
+              {/*
+               * Ticket de ejemplo — CALCADO del ticket impreso real
+               * (printReceiptBody / PrintedReceiptView del POS): mismas
+               * etiquetas, mismo orden y mismo formato de línea. Antes era un
+               * ticket inventado ("Serie de Folio:", "No. Folio:", "Fecha:" en
+               * renglones separados) que no se parecía al papel que el cliente
+               * tiene en la mano, así que no sabía dónde buscar cada dato.
+               *
+               * Los valores son de ejemplo, no de una cuenta real: esta página
+               * la ven los clientes de todos los restaurantes.
+               */}
+              <div className="mt-4 mx-auto max-w-[320px] bg-white border border-slate-300 rounded-lg shadow-inner font-mono text-[11px] leading-relaxed text-slate-700">
                 <div className="px-4 pt-4 pb-2 text-center">
                   {restaurantInfo?.logoUrl ? (
                     <img src={restaurantInfo.logoUrl} alt={restaurantName} className="h-8 mx-auto mb-2 object-contain" />
-                  ) : (
-                    <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-slate-200 flex items-center justify-center text-slate-400 text-lg">R</div>
-                  )}
-                  <div className="font-bold text-sm text-slate-700">{restaurantName.toUpperCase()}</div>
+                  ) : null}
+                  <div className="font-bold text-base">{restaurantInfo?.name ?? "Restaurante"}</div>
                 </div>
 
-                <div className="border-t border-dashed border-slate-300 mx-3" />
-
-                <div className="px-4 py-2 space-y-1.5">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-500">Orden:</span>
-                    <span className="text-slate-600">#1042</span>
-                  </div>
-                  <div className="flex justify-between items-center rounded-md bg-blue-50 border border-blue-300 px-2 py-1 -mx-2">
-                    <span className="text-blue-700 font-semibold">Serie de Folio:</span>
-                    <span className="text-blue-800 font-bold">A</span>
-                  </div>
-                  <div className="flex justify-between items-center rounded-md bg-blue-50 border border-blue-300 px-2 py-1 -mx-2">
-                    <span className="text-blue-700 font-semibold">No. Folio:</span>
-                    <span className="text-blue-800 font-bold">587</span>
-                  </div>
-                  <div className="flex justify-between items-center rounded-md bg-amber-50 border border-amber-300 px-2 py-1 -mx-2">
-                    <span className="text-amber-700 font-semibold">Mesa:</span>
-                    <span className="text-amber-800 font-bold">Terraza 3</span>
-                  </div>
-                  <div className="flex justify-between items-center rounded-md bg-green-50 border border-green-300 px-2 py-1 -mx-2">
-                    <span className="text-green-700 font-semibold">Fecha:</span>
-                    <span className="text-green-800 font-bold">07/03/2026 14:32</span>
-                  </div>
-                </div>
-
-                <div className="border-t border-dashed border-slate-300 mx-3" />
-
-                <div className="px-4 py-2 space-y-1 text-slate-500">
-                  <div className="flex justify-between"><span>2 x Platillo del dia</span><span>$320.00</span></div>
-                  <div className="flex justify-between"><span>1 x Bebida</span><span>$85.00</span></div>
-                  <div className="flex justify-between"><span>1 x Postre</span><span>$110.00</span></div>
-                </div>
-
-                <div className="border-t border-dashed border-slate-300 mx-3" />
+                <div className="border-t border-dashed border-slate-400 mx-3" />
 
                 <div className="px-4 py-2 space-y-1">
-                  <div className="flex justify-between text-slate-500"><span>Subtotal</span><span>$443.97</span></div>
-                  <div className="flex justify-between text-slate-500"><span>IVA</span><span>$71.03</span></div>
-                  <div className="flex justify-between items-center rounded-md bg-purple-50 border border-purple-300 px-2 py-1.5 -mx-2">
-                    <span className="text-purple-700 font-bold text-sm">TOTAL</span>
-                    <span className="text-purple-800 font-bold text-sm">$515.00</span>
+                  <div>
+                    MESA: <Marca color="amber">12b terraza</Marca>
                   </div>
+                  <div>MESERO: Ana López</div>
+                  <div className="flex justify-between gap-2">
+                    <span>PERSONAS: 4</span>
+                    <span>ORDEN: Orden 1042</span>
+                  </div>
+                  <div>
+                    FOLIO: <Marca color="blue">A</Marca> N°: <Marca color="blue">587</Marca>
+                  </div>
+                  <div>
+                    Fecha Creación: <Marca color="green">2026-03-07</Marca> 23:40
+                  </div>
+                  <div className="text-slate-400 line-through decoration-slate-300">
+                    Fecha Impresión: 2026-03-08 00:15
+                  </div>
+                  <div>CAJERO:</div>
                 </div>
 
-                <div className="border-t border-dashed border-slate-300 mx-3" />
+                <div className="border-t border-dashed border-slate-400 mx-3" />
 
-                <div className="px-4 py-3 text-center">
-                  <div className="text-[10px] text-slate-400">Gracias por su preferencia</div>
-                  <div className="text-[9px] text-slate-300 mt-1">GROWTHSUITE - POS</div>
+                <div className="px-4 py-2 space-y-0.5 text-slate-500">
+                  <div className="flex justify-between font-semibold text-slate-600">
+                    <span>CANT. DESCRIPCION</span>
+                    <span>IMPORTE</span>
+                  </div>
+                  <div className="flex justify-between"><span>2&nbsp;&nbsp;&nbsp;&nbsp;PLATILLO DEL DIA</span><span>$320.00</span></div>
+                  <div className="flex justify-between"><span>1&nbsp;&nbsp;&nbsp;&nbsp;BEBIDA</span><span>$85.00</span></div>
+                  <div className="flex justify-between"><span>1&nbsp;&nbsp;&nbsp;&nbsp;POSTRE</span><span>$110.00</span></div>
+                </div>
+
+                <div className="border-t border-dashed border-slate-400 mx-3" />
+
+                <div className="px-4 py-2">
+                  <div className="text-center text-sm font-bold py-1">
+                    TOTAL: <Marca color="purple">$515.00</Marca>
+                  </div>
+                  <div className="border-t border-slate-700 my-1" />
+                  <div className="flex justify-between text-slate-500">
+                    <span>SUBTOTAL: $443.97</span>
+                    <span>IVA: $71.03</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-4 space-y-1.5 text-xs">
-                <div className="flex items-center gap-2">
-                  <span className="inline-block w-3 h-3 rounded-sm bg-blue-300 border border-blue-400" />
-                  <span className="text-slate-600"><b>Serie de Folio</b> y <b>No. Folio</b> — campos obligatorios</span>
+              <div className="mt-4 space-y-2.5 text-xs">
+                <div className="flex items-start gap-2">
+                  <span className="mt-0.5 inline-block w-3 h-3 shrink-0 rounded-sm bg-blue-300 border border-blue-400" />
+                  <span className="text-slate-600">
+                    <b>Serie y número de folio</b> — en el renglón <b>FOLIO</b>. La serie es lo que va
+                    antes de <b>N°</b> (en el ejemplo, <b>A</b>) y el número lo que va después (<b>587</b>).
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="inline-block w-3 h-3 rounded-sm bg-green-300 border border-green-400" />
-                  <span className="text-slate-600"><b>Fecha</b> — día en que se realizó el consumo</span>
+                <div className="flex items-start gap-2">
+                  <span className="mt-0.5 inline-block w-3 h-3 shrink-0 rounded-sm bg-green-300 border border-green-400" />
+                  <span className="text-slate-600">
+                    <b>Fecha</b> — solo el día de <b>Fecha Creación</b>. No uses la Fecha Impresión:
+                    si pediste la cuenta después de medianoche, sale con el día siguiente y no te va a
+                    encontrar el consumo.
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="inline-block w-3 h-3 rounded-sm bg-purple-300 border border-purple-400" />
-                  <span className="text-slate-600"><b>Total</b> — el monto total del ticket</span>
+                <div className="flex items-start gap-2">
+                  <span className="mt-0.5 inline-block w-3 h-3 shrink-0 rounded-sm bg-purple-300 border border-purple-400" />
+                  <span className="text-slate-600">
+                    <b>Total</b> — el <b>TOTAL</b> grande, sin propina. Puedes escribirlo sin el signo
+                    de pesos.
+                  </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="inline-block w-3 h-3 rounded-sm bg-amber-300 border border-amber-400" />
-                  <span className="text-slate-600"><b>Mesa</b> — opcional, ayuda si hay duplicados</span>
+                <div className="flex items-start gap-2">
+                  <span className="mt-0.5 inline-block w-3 h-3 shrink-0 rounded-sm bg-amber-300 border border-amber-400" />
+                  <span className="text-slate-600">
+                    <b>Mesa</b> — obligatoria. Escríbela <b>exactamente</b> como sale después de{" "}
+                    <b>MESA:</b>, con los mismos espacios y minúsculas. Ojo con la <b>l</b> (ele) y el{" "}
+                    <b>1</b> (uno), que en papel se confunden.
+                  </span>
                 </div>
               </div>
             </Card>
