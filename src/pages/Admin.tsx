@@ -353,7 +353,7 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="w-full px-4 py-10">
-        <Title level={3}>Admin — Facturación Cantina La Llorona</Title>
+        <Title level={3}>Admin — Panel de Facturación</Title>
         <div className="grid grid-cols-1 md:grid-cols-5 w-full gap-3">
           <div className="col-span-5 md:col-span-4">
             <Tabs
